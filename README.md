@@ -53,3 +53,9 @@ ProfileSample/
 - **状態管理**: `@State` / `@Binding` / `@StateObject` / `@Published`
 - **ナビゲーション**: `NavigationStack` + `NavigationPath`
 - **デフォルトアクター分離**: `@MainActor`（`SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`）
+
+## サンプル動画
+
+https://github.com/user-attachments/assets/6fd01afe-6eae-4458-a75b-51915d2d9a48
+
+
