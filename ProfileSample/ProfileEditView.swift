@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 // MARK: - Root View
 
@@ -15,11 +16,12 @@ struct ProfileEditView: View {
     @State private var bio = "サンフランシスコを拠点とするプロダクトデザイナー。クリーンなインターフェースとユーザーエクスペリエンスに情熱を注いでいます。"
     @State private var pushNotificationsEnabled = true
     @State private var isPublicProfile = false
+    @State private var profileImage: UIImage? = nil
 
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                ProfileImageSection()
+                ProfileImageSection(profileImage: $profileImage)
 
                 PersonalInfoSection(
                     name: $name,
@@ -53,6 +55,9 @@ struct ProfileEditView: View {
 // MARK: - Profile Image Section
 
 private struct ProfileImageSection: View {
+    @Binding var profileImage: UIImage?
+    @State private var pickerItem: PhotosPickerItem? = nil
+
     var body: some View {
         HStack {
             Spacer()
@@ -61,17 +66,22 @@ private struct ProfileImageSection: View {
                     .fill(Color(red: 0.3, green: 0.4, blue: 0.45))
                     .frame(width: 110, height: 110)
                     .overlay {
-                        Image(systemName: "person.fill")
-                            .font(.system(size: 60))
-                            .foregroundStyle(.white.opacity(0.8))
+                        if let image = profileImage {
+                            Image(uiImage: image)
+                                .resizable()
+                                .scaledToFill()
+                                .clipShape(Circle())
+                        } else {
+                            Image(systemName: "person.fill")
+                                .font(.system(size: 60))
+                                .foregroundStyle(.white.opacity(0.8))
+                        }
                     }
                     .overlay {
                         Circle().stroke(Color.blue, lineWidth: 3)
                     }
 
-                Button {
-                    // 画像選択アクション（学習用サンプルのため未実装）
-                } label: {
+                PhotosPicker(selection: $pickerItem, matching: .images) {
                     Image(systemName: "camera.fill")
                         .font(.system(size: 14))
                         .foregroundStyle(.white)
@@ -82,6 +92,14 @@ private struct ProfileImageSection: View {
                 .offset(x: 4, y: 4)
             }
             Spacer()
+        }
+        .onChange(of: pickerItem) {
+            Task {
+                if let data = try? await pickerItem?.loadTransferable(type: Data.self),
+                   let image = UIImage(data: data) {
+                    profileImage = image
+                }
+            }
         }
     }
 }
