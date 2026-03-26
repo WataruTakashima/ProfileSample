@@ -1,0 +1,40 @@
+# Xcode
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+xcuserdata/
+
+# Build products
+build/
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+.swiftpm/
+
+# CocoaPods (未使用でも念のため)
+Pods/
+*.xcworkspace
+!*.xcodeproj/*.xcworkspace
+
+# Tuist
+Derived/
+graph.dot
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# Claude Code
+.claude/
